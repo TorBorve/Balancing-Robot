@@ -1,0 +1,3 @@
+[submodule "lib/Arduino-Log"]
+	path = lib/Arduino-Log
+	url = git@github.com:thijse/Arduino-Log.git
