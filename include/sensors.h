@@ -1,50 +1,45 @@
 #pragma once
 
-#include <string>
-#include <Wire.h>
+#define IMU_UPDATE_INTERVAL 20
+
+#ifndef NDEBUG
+    #define DBG 1
+
+#else
+    #define DBG 0
+#endif
 
 #include "SparkFun_BNO080_Arduino_Library.h"
-
+    
 namespace Sensors {
 
-BNO080 myIMU;
 
-void setup() {
-    Wire.begin();
+class IMU {
+public:
+    IMU();
+    bool setup();
+    void loop();
+    void logMeasurements();
+    float getTheta();
+    float getThetaDot();
+    float getPsi();
+    float getPsiDot();
+private:
+    bool verifyConnection();
+    BNO080 myIMU;
+    float theta, thetaDot, psi, psiDot;
+};
 
-    if (myIMU.begin() == false) {
-        std::string error = "BNO080 not detected at default I2C address. Check your jumpers. Freezing...";
-        while (true) {
-            Serial.println(error.c_str());
-            delay(5000);
-        }
-    }
-    Wire.setClock(400000);  // Increase I2C data rate to 400kHz
+extern IMU imu;
 
-    myIMU.enableRotationVector(50); //Send data update every 50ms
-    myIMU.enableGyro(50);
-}
+// bool setup();
+// void loop();
 
-void loop() {
-    if (myIMU.dataAvailable() == false) {
-        Serial.println("No data available");
-    }
-}
+// void logMeasurements();
 
-float getTheta() {
-    if (myIMU.dataAvailable() == false) {
-        Serial.println("No data available");
-    }
-    float yaw = myIMU.getYaw();
-    float pitch = myIMU.getPitch();
-    constexpr float offset = M_PI / 2;
-    pitch += offset;
-    pitch *= (yaw > 0 ? -1 : 1);
-    return pitch;
-}
-
-float getThetaDot() {
-    return myIMU.getGyroY();
-}
+// float getTheta();
+// float getThetaDot();
+// float getPsi();
+// float getPsiDot();
 
 }  // namespace Sensors
