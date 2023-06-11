@@ -32,14 +32,4 @@ private:
 
 extern IMU imu;
 
-// bool setup();
-// void loop();
-
-// void logMeasurements();
-
-// float getTheta();
-// float getThetaDot();
-// float getPsi();
-// float getPsiDot();
-
 }  // namespace Sensors
