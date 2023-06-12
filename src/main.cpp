@@ -3,8 +3,16 @@
 #include <sensors.h>
 
 void setup() {
-    Logger::setup();
-    Sensors::imu.setup();
+    bool error = false;
+    error |= Logger::setup();
+    Log.infoln("Starting up");
+    error |= Sensors::imu.setup();
+    if (error) {
+        Log.errorln("Setup failed. Rebooting...");
+        _reboot_Teensyduino_();
+        while (true);
+    }
+    Log.infoln("Setup complete");
 }
 
 void loop() {

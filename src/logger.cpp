@@ -71,7 +71,7 @@ bool setup() {
     Log.setSuffix(printSuffix); // set suffix 
     Log.begin(LOG_LEVEL_TRACE, &Serial);
     Log.setShowLevel(false);    // Do not show loglevel, we will do this in the prefix
-    return true;
+    return false;
 }
 
 
