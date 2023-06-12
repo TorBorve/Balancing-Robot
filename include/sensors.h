@@ -18,7 +18,7 @@ class IMU {
 public:
     IMU();
     bool setup();
-    void loop();
+    bool loop();
     void logMeasurements();
     float getTheta();
     float getThetaDot();

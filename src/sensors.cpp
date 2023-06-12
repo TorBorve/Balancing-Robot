@@ -17,36 +17,31 @@ IMU::IMU() {
 
 
 bool IMU::verifyConnection() {
+    uint32_t startTime = millis();
     Log.infoln("Verifying connection to BNO080");
-    Log.infoln("Waiting for data available");
-    while (myIMU.dataAvailable() == false);
 
-    float theta, thetaDot, psi, psiDot;
     Log.infoln("Waiting for valid data");
-    Log.traceln("waiting for valid theta");
-    do {
-        theta = getTheta();
-        delay(IMU_UPDATE_INTERVAL);
-    } while (theta < -M_PI/2 || theta > M_PI / 2);
-    
-    Log.traceln("waiting for valid thetaDot");
-    do {
-        thetaDot = getThetaDot();
-        delay(IMU_UPDATE_INTERVAL);
-    } while (abs(thetaDot) < 0.001);
-
-    Log.traceln("waiting for valid psi");
-    do {
-        psi = getPsi();
-        delay(IMU_UPDATE_INTERVAL);
-    } while (psi < -M_PI || psi > M_PI);
-
-    Log.traceln("waiting for valid psiDot");
-    do {
-        psiDot = getPsiDot();
-        delay(IMU_UPDATE_INTERVAL);
-    } while (abs(psiDot) < 0.001);
-    Log.infoln("Connection to BNO080 is ok");
+    bool success = false;
+    while(success == false) {
+        success = true;
+        if (loop()) {
+            float theta = getTheta();
+            float thetaDot = getThetaDot();
+            float psi = getPsi();
+            float psiDot = getPsiDot();
+            success &= (theta > -M_PI/2 && theta < M_PI / 2);
+            success &= (std::fabs(thetaDot) > 0.001);
+            success &= (psi > -M_PI && psi < M_PI);
+            success &= (std::fabs(psiDot) > 0.001);
+        
+        } else {
+            success = false;
+        }
+        if (millis() > startTime + 5000) {
+            Log.errorln("Timed out waiting for valid data");
+            return true;
+        }
+    }
     return false;
 }
 
@@ -62,11 +57,10 @@ bool IMU::setup() {
 
     myIMU.enableRotationVector(IMU_UPDATE_INTERVAL); //Send data update every 50ms
     myIMU.enableGyro(IMU_UPDATE_INTERVAL);
-    // verifyConnection();
-    return false;
+    return verifyConnection();
 }
 
-void IMU::loop() {
+bool IMU::loop() {
     if (myIMU.dataAvailable() == true) {
         float yaw = myIMU.getYaw();
         float pitch = myIMU.getPitch();
@@ -78,7 +72,9 @@ void IMU::loop() {
         thetaDot = myIMU.getGyroY();
         psi = yaw;
         psiDot = myIMU.getGyroX();
+        return true;
     }
+    return false;
 }
 
 void IMU::logMeasurements() {
