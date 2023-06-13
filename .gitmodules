@@ -1,3 +1,6 @@
 [submodule "lib/Arduino-Log"]
 	path = lib/Arduino-Log
 	url = git@github.com:thijse/Arduino-Log.git
+[submodule "lib/Arduino-PID-Library"]
+	path = lib/Arduino-PID-Library
+	url = git@github.com:br3ttb/Arduino-PID-Library.git
