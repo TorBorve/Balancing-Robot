@@ -64,9 +64,9 @@ bool IMU::loop() {
     if (myIMU.dataAvailable() == true) {
         float yaw = myIMU.getYaw();
         float pitch = myIMU.getPitch();
-        constexpr float offset = M_PI / 2;
+        constexpr float offset = M_PI / 2; // compensate for mounting orientation
         pitch += offset;
-        pitch *= (yaw > 0 ? -1 : 1);
+        pitch *= (yaw > 0 ? -1 : 1); //  fix sign of pitch due to using euler angles
 
         theta = pitch;
         thetaDot = myIMU.getGyroY();

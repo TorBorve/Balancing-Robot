@@ -1,6 +1,6 @@
 #pragma once
 
-#define IMU_UPDATE_INTERVAL 20
+#define IMU_UPDATE_INTERVAL 4 //ms
 
 #ifndef NDEBUG
     #define DBG 1
