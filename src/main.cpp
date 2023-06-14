@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <logger.h>
 #include <sensors.h>
+#include <Balancer.h>
 
 void setup() {
     bool error = false;
@@ -18,8 +19,9 @@ void setup() {
 void loop() {
     Sensors::imu.loop();
     static uint32_t prevPrint = millis();
-    if (millis() > prevPrint + 50) {
+    if (millis() > prevPrint + 100) {
         Sensors::imu.logMeasurements();
         prevPrint = millis();
     }
+    balancer.update();
 }
