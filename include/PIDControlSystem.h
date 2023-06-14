@@ -5,12 +5,16 @@
 namespace ControlSystems {
 class PIDControlSystem {
 public:
+    struct Inputs {
+        double sum;
+        double diff;
+    };
     PIDControlSystem(double KpSum, double KiSum, double KdSum, double KpDiff, double KiDiff, double KdDiff, double setpointSum, double setpointDiff);
     void setSampleTime(double sampleTime);
     void setOutputLimits(double minSum, double maxSum, double minDiff, double maxDiff);
     void setTunings(double KpSum, double KiSum, double KdSum, double KpDiff, double KiDiff, double KdDiff);
     void setSetpoints(double setpointSum, double setpointDiff);
-    void update(double inputSum, double inputDiff);
+    Inputs update(double inputSum, double inputDiff);
 private:
     PID _pidSum;
     double _inputSum;
