@@ -53,3 +53,5 @@ class HumanInterface {
     Button _on_off_button;
     uint32_t _last_update_time;
 };
+
+extern HumanInterface humanInterface;

@@ -2,6 +2,7 @@
 #include <logger.h>
 #include <sensors.h>
 #include <Balancer.h>
+#include <HumanInterface.h>
 
 void setup() {
     bool error = false;
@@ -17,6 +18,7 @@ void setup() {
 }
 
 void loop() {
+    humanInterface.update();
     Sensors::imu.loop();
     static uint32_t prevPrint = millis();
     if (millis() > prevPrint + 100) {

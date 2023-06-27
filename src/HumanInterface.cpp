@@ -10,7 +10,7 @@
 #define MEDIUM_BLINK_INTERVAL 500
 #define SLOW_BLINK_INTERVAL 1000
 
-#define ON_OFF_BUTTON_PIN 32
+#define ON_OFF_BUTTON_PIN 0
 
 #define HUMAN_INTERFACE_UPDATE_INTERVAL 50
 
@@ -79,8 +79,8 @@ HumanInterface::HumanInterface()
       _yellow_led(YELLOW_LED_PIN, LED::Mode::OFF),
       _green_led(GREEN_LED_PIN, LED::Mode::OFF),
       _builtin_led(LED_BUILTIN, LED::Mode::BLINK, FAST_BLINK_INTERVAL),
-      _last_update_time(0),
-      _on_off_button(ON_OFF_BUTTON_PIN) {
+      _on_off_button(ON_OFF_BUTTON_PIN),
+      _last_update_time(0) {
     update();
 }
 
@@ -93,3 +93,5 @@ void HumanInterface::update() {
         _builtin_led.update();
     }
 }
+
+HumanInterface humanInterface{};
