@@ -12,6 +12,8 @@
 
 #define MAIN_LOOP_INTERVAL 10  // ms
 
+#define MAX_ANGLE_STOP (60.0 * M_PI / 180.0)  // radians
+
 enum ControlMode { STOP, BALANCE };
 
 class Balancer {

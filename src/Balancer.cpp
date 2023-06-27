@@ -30,6 +30,11 @@ void Balancer::update() {
                 break;
             case ControlMode::BALANCE:
                 _motors.setEnable(true);
+                double theta = Sensors::imu.getTheta();
+                if (fabs(theta) > MAX_ANGLE_STOP) {
+                    _control_mode = ControlMode::STOP;
+                    break;
+                }
                 ControlSystems::PIDControlSystem::Inputs inputs = _angle_control.update(Sensors::imu.getTheta(), 1.0);
                 // inputs.diff = 0.12;
                 Log.infoln(F("Sum: %F, Diff: %F"), (float)inputs.sum, (float)inputs.diff);
