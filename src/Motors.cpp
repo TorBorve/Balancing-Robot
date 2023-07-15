@@ -45,13 +45,14 @@ void Motors::setInputLR(float left, float right) {
 void Motors::setInputOneSide(unsigned int forwardPin, unsigned int backwardPin, float input) {
     input *= _scaleLeft;
     float maxInput = _maxInputPercent * 255;
+    constexpr float offset = 0.09;
     input = min(max(255 * input, -maxInput), maxInput);
     if (input > 0) {
-        analogWrite(forwardPin, input);
+        analogWrite(forwardPin, input + offset);
         analogWrite(backwardPin, 0);
     } else {
         analogWrite(forwardPin, 0);
-        analogWrite(backwardPin, -input);
+        analogWrite(backwardPin, -input + offset);
     }
 }
 

@@ -39,6 +39,7 @@ bool IMU::verifyConnection() {
         }
         if (millis() > startTime + 5000) {
             Log.errorln("Timed out waiting for valid data");
+            delay(1000);
             return true;
         }
     }
@@ -64,14 +65,19 @@ bool IMU::loop() {
     if (myIMU.dataAvailable() == true) {
         float yaw = myIMU.getYaw();
         float pitch = myIMU.getPitch();
-        constexpr float offset = M_PI / 2; // compensate for mounting orientation
-        pitch += offset;
-        pitch *= (yaw > 0 ? -1 : 1); //  fix sign of pitch due to using euler angles
-
+        // float roll = myIMU.getRoll();
         theta = pitch;
         thetaDot = myIMU.getGyroY();
+        #pragma warning "TODO: fix yaw and yawDot"
+        // Serial.printf("Yaw: %.2f, Pitch: %.2f, Roll: %.2f\n", yaw, pitch, roll);
+        // constexpr float offset = M_PI / 2; // compensate for mounting orientation
+        // pitch += offset;
+        // pitch *= (yaw > 0 ? -1 : 1); //  fix sign of pitch due to using euler angles
+
+        // theta = pitch;
+        // thetaDot = myIMU.getGyroY();
         psi = yaw;
-        psiDot = myIMU.getGyroX();
+        psiDot = myIMU.getGyroZ();
         return true;
     }
     return false;
